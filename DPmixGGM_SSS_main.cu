@@ -8,40 +8,40 @@
 #include <math.h>
 #include <string.h>
 
-#define SSS										// If uncommented, runs the Stochastic Shotgun Search
+#define SSS									// If uncommented, runs the Stochastic Shotgun Search
 //#define MCMC									// If uncommented, runs the Markov chain Monte Carlo
-												// Note: Need at lease one of the above two uncommented
+										// Note: Need at lease one of the above two uncommented
 //#define CUDA									// If uncommented, runs CUDA kernels on GPU
 #define MAXL 10									// Maximum number of mixture components that can be accommodated
 
 #ifdef SSS
 // SSS- runtime parameters
-#define maxLocalWastedIterations (n+p)			// In paper, C
-#define climbDownStepSize 10					// In paper, D
-#define maxLocalJumpCount 10					// In paper, R
-#define MAXNGLOBALJUMP 2						// In paper, S / (C * R)
+#define maxLocalWastedIterations (n+p)						// In paper, C
+#define climbDownStepSize 10							// In paper, D
+#define maxLocalJumpCount 10							// In paper, R
+#define MAXNGLOBALJUMP 2							// In paper, S / (C * R)
 // SSS- parameters for lists of models saved
-#define sizeOfFeatureSelectionList 20			// In paper, M
-#define sizeOfBestList 100						// Number of highest-score models to keep track of
+#define sizeOfFeatureSelectionList 20						// In paper, M
+#define sizeOfBestList 100							// Number of highest-score models to keep track of
 // SSS- 
 #define LOCALMOVE_SFACTOR 0.001
 #define GLOBALJUMP_SFACTOR 0.01
-#define G_TO_XI int(L*p*(p-1)/(2*n))			// In paper, g
+#define G_TO_XI int(L*p*(p-1)/(2*n))						// In paper, g
 #define XI_TO_SM 10								// In paper, h
-#define LOOKFORWARD 5							// In paper, f
+#define LOOKFORWARD 5								// In paper, f
 #define RGMS_T 2								// In paper, t
 // number of chains parameters
 #define N_INIT 3								// Number of points of initial models provided by the user in folder DATA/
-#define TRY_EACH_INIT 1							// Number of times to restart from each given initial point
-#define N_RANDOM_RESTART 3						// Number of times to restart from random random initial points
-#define N_MODES_LIST_RESTART 3					// Number of times to start from
+#define TRY_EACH_INIT 1								// Number of times to restart from each given initial point
+#define N_RANDOM_RESTART 3							// Number of times to restart from random random initial points
+#define N_MODES_LIST_RESTART 3							// Number of times to start from
 #define maxNmodes ((TRY_EACH_INIT*N_INIT+N_RANDOM_RESTART+N_MODES_LIST_RESTART)+1)
 #endif
 
 #ifdef MCMC
 // MCMC- runtime parameters
-#define BURNIN 20000							// Burn-in
-#define N_ITR  100000							// Number of iterations to run after burn-in
+#define BURNIN 20000								// Burn-in
+#define N_ITR  100000								// Number of iterations to run after burn-in
 #ifdef CUDA
 #undef CUDA
 #endif
@@ -125,9 +125,9 @@ int main (int argc, char *argv[])
   
   // Initializing gsl random variate generators and integration tools
   const gsl_rng_type *T; time_t calendar_time; gsl_rng_env_setup(); T = gsl_rng_default; rnd = gsl_rng_alloc (T); calendar_time = time(NULL); gsl_rng_set(rnd,RANDOMSEED);
-  #ifdef SSS
+#ifdef SSS
   unsigned long int seedset[maxNmodes]; for(i=0; i<maxNmodes; i++) { seedset[i] = gsl_rng_get (rnd); }
-  #endif
+#endif
   
   w = gsl_integration_workspace_alloc (GSL_INTEGRATION_GRIDSIZE);
   
